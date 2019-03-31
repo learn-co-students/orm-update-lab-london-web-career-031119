@@ -13,19 +13,19 @@ attr_reader :id, :name, :grade
   end
 
   def self.create_table
-    DB:conn.execute('CREATE TABLE students(id PRIMARY KEY, name TEXT, grade INTEGER)')
+    DB[:conn].execute('CREATE TABLE students(id PRIMARY KEY, name TEXT, grade INTEGER)')
   end
 
   def self.drop_table
-    DB:conn.execute('DROP TABLE students')
+    DB[:conn].execute('DROP TABLE students')
   end
 
   def save
-    DB:conn.execute('INSERT INTO students (name, grade) VALUES (@name, @grade) ')
+    DB[:conn].execute('INSERT INTO students (name, grade) VALUES (@name, @grade) ')
   end
 
   def create(name:, grade:)
-    DB:conn.execute('INSERT INTO students (name, grade) VALUES (?, ?)', :name, :grade)
+    DB[:conn].execute('INSERT INTO students (name, grade) VALUES (?, ?)', :name, :grade)
   end
 
   def self.new_from_db(array)
@@ -33,11 +33,11 @@ attr_reader :id, :name, :grade
   end
 
   def self.find_by_name(name)
-    student = DB:conn.execute('SELECT * FROM students WHERE :name == name ')
+    student = DB[:conn].execute('SELECT * FROM students WHERE :name == name ')
     new_from_db(student)
   end
 
   def update
-    create(name:@name,grade:@grade)
+    DB[:conn].execute('UPDATE studemts SET name = ?, album = ? WHERE id = ?', @name, @grade, @id)
   end
 end
